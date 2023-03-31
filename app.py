@@ -4,6 +4,7 @@ from flask import Flask
 from flask import request
 from flask import make_response
 from service.Case_hello import hello_function
+from service.Case_manga import render_manga
 
 # Flask
 app = Flask(__name__)
@@ -28,14 +29,16 @@ def generating_answer(message):
     print('raw message ===> \n',json.dumps(message, indent=4 ,ensure_ascii=False))
 
     #เก็บค่า ชื่อของ intent group ที่รับมาจาก Dailogflow
-    intent_group_question_str = message["queryResult"]["intent"]["displayName"] 
-    print(intent_group_question_str)
+    intent = message["queryResult"]["intent"]["displayName"] 
+    print(intent)
 
     #ลูปตัวเลือกของฟังก์ชั่นสำหรับตอบคำถามกลับ
-    if intent_group_question_str == 'Case_sleepy':
+    if intent == 'Case_sleepy':
         answer_from_bot = {"fulfillmentText": "ง่วงเหมือนกัน"}
-    elif intent_group_question_str == 'Case_Hello':
+    elif intent == 'Case_Hello':
         answer_from_bot = hello_function()
+    elif intent == 'Case_manga':
+        answer_from_bot = render_manga()
     else: 
         answer_from_bot = {"fulfillmentText": "พูดไรนิ"}
 
